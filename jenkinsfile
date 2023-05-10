@@ -5,7 +5,8 @@ pipeline{
         stage('git checkout'){
 
             script{
-                
+                git branch: 'main',
+                url: 'https://github.com/Araj28196/Devops-java-app.git'
             }
         }
     }
