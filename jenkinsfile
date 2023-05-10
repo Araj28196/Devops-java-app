@@ -1,12 +1,16 @@
 pipeline{
+
     agent any
 
     stages{
-        stage('git checkout'){
+        stage('Git Checkout'){
+            
+            steps{
 
             script{
                 git branch: 'main',
                 url: 'https://github.com/Araj28196/Devops-java-app.git'
+                }
             }
         }
     }
