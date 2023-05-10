@@ -12,11 +12,7 @@ pipeline{
     stages{
         
         stage('Git Checkout'){
-            when{ 
-            expression {
-                params.action == 'create'
-            }
-            }
+            when { expression {  params.action == 'create' } } 
             steps{
 
             script{
@@ -31,13 +27,10 @@ pipeline{
         }
     
         stage('Unit Test maven'){
-            
+            when { expression {  params.action == 'create' } }
+           
             steps{
-                when{ 
-            expression {
-                params.action == 'create'
-            }
-             }
+            
             script{
 
                 mvnTest()
@@ -47,13 +40,9 @@ pipeline{
         }
 
         stage('Integration Test maven'){
-            
+            when { expression {  params.action == 'create' } }
             steps{
-                when{ 
-            expression {
-                params.action == 'create'
-                }
-            }
+
             script{
 
                 mvnIntegrationTest()
@@ -64,12 +53,9 @@ pipeline{
         
         stage('Static code analysis: Sonarqube'){
             
+            when { expression {  params.action == 'create' } }
             steps{
-                when{ 
-            expression {
-                params.action == 'create'
-                }
-            }
+
             script{
                 def SonarQubecredentialsId = 'sonar-api'
                 statiCodeAnalysis(SonarQubecredentialsId)
