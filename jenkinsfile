@@ -9,13 +9,13 @@ pipeline{
     }
 
     stages{
-        when{ 
+        
+        stage('Git Checkout'){
+            when{ 
             expression {
                 params.action == 'create'
             }
-        }
-        stage('Git Checkout'){
-            
+            }
             steps{
 
             script{
@@ -28,15 +28,15 @@ pipeline{
                 }
             }
         }
-        when{ 
-            expression {
-                params.action == 'create'
-            }
-        }
+    
         stage('Unit Test maven'){
             
             steps{
-
+                when{ 
+            expression {
+                params.action == 'create'
+            }
+             }
             script{
 
                 mvnTest()
@@ -44,15 +44,15 @@ pipeline{
                 }
             }
         }
-        when{ 
-            expression {
-                params.action == 'create'
-            }
-        }
+
         stage('Integration Test maven'){
             
             steps{
-
+                when{ 
+            expression {
+                params.action == 'create'
+                }
+            }
             script{
 
                 mvnIntegrationTest()
@@ -60,19 +60,18 @@ pipeline{
                 }
             }
         }
-        when{ 
-            expression {
-                params.action == 'create'
-            }
-        }
+        
         stage('Static code analysis: Sonarqube'){
             
             steps{
-
+                when{ 
+            expression {
+                params.action == 'create'
+                }
+            }
             script{
-
-                staticCodeAnalysis()
-
+                def SonarQubecredentialsId = 'sonar-api'
+                statiCodeAnalysis(SonarQubecredentialsId)
                 }
             }
         }
