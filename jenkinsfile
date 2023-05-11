@@ -4,11 +4,6 @@ pipeline{
 
     agent any
 
-    parameters{
-        //choice(name:'action', choices: 'create\ndelete', description: 'Choose how you wanna proceed')
-        choice(name: 'action', choices: 'create\ndelete', description: 'Choose create/Destroy')
-    }
-
     stages{
         
         stage('Git Checkout'){
@@ -27,21 +22,18 @@ pipeline{
         }
     
         stage('Unit Test maven'){
-            when { expression {  params.action == 'create' } }
-           
+          
             steps{
             
             script {
-                    // Set JVM argument for Maven
-                    withEnv(['MAVEN_OPTS=--illegal-access=permit']) {
-                        sh 'mvn test'
-                    }
+
+                     sh 'mvn test'
                 }
             }
         }
 
         stage('Integration Test maven'){
-            when { expression {  params.action == 'create' } }
+
             steps{
 
             script{
@@ -54,12 +46,13 @@ pipeline{
         
         stage('Static code analysis: Sonarqube'){
             
-            when { expression {  params.action == 'create' } }
             steps{
 
             script{
-                def SonarQubecredentialsId = 'sonar-api'
-                statiCodeAnalysis(SonarQubecredentialsId)
+
+                withSonarQubeEnv('sonar-api': 'sonar-api') {
+                sh 'mvn clean package sonar:sonar'
+                    }
                 }
             }
         }
