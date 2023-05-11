@@ -31,11 +31,11 @@ pipeline{
            
             steps{
             
-            script{
-
-                mvnTest()
-
-                }
+            script {
+                    // Set JVM argument for Maven
+                    withEnv(['MAVEN_OPTS=--illegal-access=permit']) {
+                        sh 'mvn test'
+                    }
             }
         }
 
