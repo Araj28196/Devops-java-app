@@ -27,7 +27,7 @@ pipeline{
             
             script {
 
-                     sh 'mvn test'
+                    mvnTest()
                 }
             }
         }
@@ -50,9 +50,9 @@ pipeline{
 
             script{
 
-                withSonarQubeEnv('sonar-api': 'sonar-api') {
-                sh 'mvn clean package sonar:sonar'
-                    }
+                def SonarQubecredentialsId = 'sonar-api'
+		staticCodeAnalysis(SonarQubecredentialsId)
+
                 }
             }
         }
